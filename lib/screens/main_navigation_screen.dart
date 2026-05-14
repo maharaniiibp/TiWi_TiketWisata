@@ -1,39 +1,42 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/custom_header.dart';
-import '../widgets/bottom_navbar.dart';
-
 import 'home_screen.dart';
 import 'favorite_screen.dart';
 import 'history_screen.dart';
 import 'profile_screen.dart';
 
-class MainNavigationScreen
-    extends StatefulWidget {
+import '../widgets/bottom_navbar.dart';
+import '../widgets/custom_header.dart';
+
+class MainNavigationScreen extends StatefulWidget {
+  final int initialIndex;
 
   const MainNavigationScreen({
     super.key,
+    this.initialIndex = 0,
   });
 
   @override
-  State<MainNavigationScreen>
-      createState() =>
-          _MainNavigationScreenState();
+  State<MainNavigationScreen> createState() =>
+      _MainNavigationScreenState();
 }
 
 class _MainNavigationScreenState
     extends State<MainNavigationScreen> {
 
-  int currentIndex = 0;
+  late int _selectedIndex;
 
-  final List<Widget> pages = [
+  @override
+  void initState() {
+    super.initState();
 
+    _selectedIndex = widget.initialIndex;
+  }
+
+  final List<Widget> _screens = [
     const HomeScreen(),
-
     const FavoriteScreen(),
-
     const HistoryScreen(),
-
     const ProfileScreen(),
   ];
 
@@ -41,43 +44,30 @@ class _MainNavigationScreenState
   Widget build(BuildContext context) {
 
     return Scaffold(
-
-      backgroundColor:
-          const Color(0xFFF5F5F5),
+      backgroundColor: const Color(0xFFF7F7F7),
 
       body: SafeArea(
-
         child: Column(
           children: [
 
-            // HEADER
             const Padding(
               padding: EdgeInsets.all(20),
-
               child: CustomHeader(),
             ),
 
-            // BODY
             Expanded(
-              child:
-                  pages[currentIndex],
+              child: _screens[_selectedIndex],
             ),
           ],
         ),
       ),
 
-      // NAVBAR
-      bottomNavigationBar:
-          BottomNavbar(
-
-        currentIndex:
-            currentIndex,
+      bottomNavigationBar: BottomNavbar(
+        currentIndex: _selectedIndex,
 
         onTap: (index) {
-
           setState(() {
-
-            currentIndex = index;
+            _selectedIndex = index;
           });
         },
       ),

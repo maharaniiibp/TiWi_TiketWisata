@@ -5,45 +5,99 @@ class CategoryChip extends StatelessWidget {
   final String title;
   final IconData icon;
 
+  final bool isSelected;
+
+  final VoidCallback onTap;
+
   const CategoryChip({
     super.key,
+
     required this.title,
     required this.icon,
+
+    required this.isSelected,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 18,
-        vertical: 12,
-      ),
+    return GestureDetector(
 
-      decoration: BoxDecoration(
-        color: Colors.white,
+      onTap: onTap,
 
-        borderRadius:
-            BorderRadius.circular(30),
-      ),
+      child: Container(
 
-      child: Row(
-        children: [
+        padding:
+            const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 14,
+        ),
 
-          Icon(
-            icon,
-            color: const Color(0xFF0066B3),
+        decoration: BoxDecoration(
+
+          color: isSelected
+              ? const Color(0xFF0066B3)
+              : Colors.white,
+
+          borderRadius:
+              BorderRadius.circular(
+            30,
           ),
 
-          const SizedBox(width: 8),
+          boxShadow: [
 
-          Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
+            BoxShadow(
+
+              color: Colors.black
+                  .withOpacity(0.04),
+
+              blurRadius: 10,
+
+              offset: const Offset(
+                0,
+                4,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+
+        child: Row(
+
+          children: [
+
+            Icon(
+
+              icon,
+
+              size: 20,
+
+              color: isSelected
+                  ? Colors.white
+                  : const Color(
+                      0xFF0066B3),
+            ),
+
+            const SizedBox(width: 8),
+
+            Text(
+
+              title,
+
+              style: TextStyle(
+
+                fontSize: 15,
+
+                fontWeight:
+                    FontWeight.w600,
+
+                color: isSelected
+                    ? Colors.white
+                    : Colors.black87,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

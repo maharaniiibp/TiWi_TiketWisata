@@ -9,7 +9,6 @@ import '../models/destination_model.dart';
 import '../services/api_service.dart';
 
 class HomeScreen extends StatefulWidget {
-
   const HomeScreen({super.key});
 
   @override
@@ -23,6 +22,8 @@ class _HomeScreenState
   late Future<List<DestinationModel>>
       destinations;
 
+  String selectedCategory = "All";
+
   @override
   void initState() {
     super.initState();
@@ -35,21 +36,16 @@ class _HomeScreenState
   Widget build(BuildContext context) {
 
     return Scaffold(
-
       backgroundColor:
           const Color(0xFFF5F5F5),
 
       body: SafeArea(
-
         child: SingleChildScrollView(
-
           child: Padding(
-
             padding:
                 const EdgeInsets.all(20),
 
             child: Column(
-
               crossAxisAlignment:
                   CrossAxisAlignment.start,
 
@@ -65,7 +61,7 @@ class _HomeScreenState
 
                 const SizedBox(height: 30),
 
-                // CATEGORY TITLE
+                // TITLE
                 const Text(
                   "Kategori",
 
@@ -78,51 +74,122 @@ class _HomeScreenState
 
                 const SizedBox(height: 18),
 
-                // CATEGORY LIST
+                // CATEGORY
                 SingleChildScrollView(
-
                   scrollDirection:
                       Axis.horizontal,
 
                   child: Row(
-                    children: const [
+                    children: [
+
+                      CategoryChip(
+                        title: "All",
+                        icon: Icons.apps,
+
+                        isSelected:
+                            selectedCategory ==
+                                "All",
+
+                        onTap: () {
+                          setState(() {
+                            selectedCategory =
+                                "All";
+                          });
+                        },
+                      ),
+
+                      const SizedBox(width: 12),
 
                       CategoryChip(
                         title: "Beach",
                         icon:
                             Icons.beach_access,
+
+                        isSelected:
+                            selectedCategory ==
+                                "Beach",
+
+                        onTap: () {
+                          setState(() {
+                            selectedCategory =
+                                "Beach";
+                          });
+                        },
                       ),
 
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
 
                       CategoryChip(
                         title: "Mountain",
                         icon:
                             Icons.landscape,
+
+                        isSelected:
+                            selectedCategory ==
+                                "Mountain",
+
+                        onTap: () {
+                          setState(() {
+                            selectedCategory =
+                                "Mountain";
+                          });
+                        },
                       ),
 
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
 
                       CategoryChip(
                         title: "Museum",
                         icon:
                             Icons.museum,
+
+                        isSelected:
+                            selectedCategory ==
+                                "Museum",
+
+                        onTap: () {
+                          setState(() {
+                            selectedCategory =
+                                "Museum";
+                          });
+                        },
                       ),
 
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
 
                       CategoryChip(
                         title: "Park",
-                        icon:
-                            Icons.park,
+                        icon: Icons.park,
+
+                        isSelected:
+                            selectedCategory ==
+                                "Park",
+
+                        onTap: () {
+                          setState(() {
+                            selectedCategory =
+                                "Park";
+                          });
+                        },
                       ),
 
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
 
                       CategoryChip(
                         title: "Cultural",
-                        icon:
-                            Icons.temple_buddhist,
+                        icon: Icons
+                            .temple_buddhist,
+
+                        isSelected:
+                            selectedCategory ==
+                                "Cultural",
+
+                        onTap: () {
+                          setState(() {
+                            selectedCategory =
+                                "Cultural";
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -130,9 +197,8 @@ class _HomeScreenState
 
                 const SizedBox(height: 34),
 
-                // RECOMMENDED TITLE
+                // RECOMMENDED
                 Row(
-
                   mainAxisAlignment:
                       MainAxisAlignment
                           .spaceBetween,
@@ -165,10 +231,9 @@ class _HomeScreenState
 
                 const SizedBox(height: 20),
 
-                // API DATA
+                // API
                 FutureBuilder<
                     List<DestinationModel>>(
-
                   future: destinations,
 
                   builder:
@@ -203,12 +268,22 @@ class _HomeScreenState
                       );
                     }
 
-                    // DATA
-                    final data =
+                    final allData =
                         snapshot.data!;
 
-                    return ListView.builder(
+                    final data =
+                        selectedCategory ==
+                                "All"
+                            ? allData
+                            : allData.where(
+                                (item) {
 
+                                return item
+                                        .category ==
+                                    selectedCategory;
+                              }).toList();
+
+                    return ListView.builder(
                       itemCount:
                           data.length,
 
