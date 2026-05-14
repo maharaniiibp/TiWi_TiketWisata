@@ -1,57 +1,74 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/custom_header.dart';
 import '../widgets/search_bar_widget.dart';
 import '../widgets/home_banner.dart';
 import '../widgets/category_chip.dart';
 import '../widgets/destination_card.dart';
-import '../widgets/bottom_navbar.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../models/destination_model.dart';
+import '../services/api_service.dart';
+
+class HomeScreen extends StatefulWidget {
+
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() =>
+      _HomeScreenState();
+}
+
+class _HomeScreenState
+    extends State<HomeScreen> {
+
+  late Future<List<DestinationModel>>
+      destinations;
+
+  @override
+  void initState() {
+    super.initState();
+
+    destinations =
+        ApiService.fetchDestinations();
+  }
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
+
       backgroundColor:
           const Color(0xFFF5F5F5),
 
-      bottomNavigationBar:
-          const BottomNavbar(
-        currentIndex: 0,
-      ),
-
       body: SafeArea(
+
         child: SingleChildScrollView(
 
           child: Padding(
+
             padding:
                 const EdgeInsets.all(20),
 
             child: Column(
+
               crossAxisAlignment:
                   CrossAxisAlignment.start,
 
               children: [
 
-                const CustomHeader(
-                  title: "Hi, Explorer",
-                  subtitle: "Welcome back",
-                ),
-
-                const SizedBox(height: 24),
-
+                // SEARCH BAR
                 const SearchBarWidget(),
 
                 const SizedBox(height: 26),
 
+                // BANNER
                 const HomeBanner(),
 
                 const SizedBox(height: 30),
 
+                // CATEGORY TITLE
                 const Text(
                   "Kategori",
+
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight:
@@ -61,7 +78,9 @@ class HomeScreen extends StatelessWidget {
 
                 const SizedBox(height: 18),
 
+                // CATEGORY LIST
                 SingleChildScrollView(
+
                   scrollDirection:
                       Axis.horizontal,
 
@@ -86,14 +105,16 @@ class HomeScreen extends StatelessWidget {
 
                       CategoryChip(
                         title: "Museum",
-                        icon: Icons.museum,
+                        icon:
+                            Icons.museum,
                       ),
 
                       SizedBox(width: 12),
 
                       CategoryChip(
                         title: "Park",
-                        icon: Icons.park,
+                        icon:
+                            Icons.park,
                       ),
 
                       SizedBox(width: 12),
@@ -107,34 +128,111 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 34),
 
-                const Text(
-                  "Recommended",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight:
-                        FontWeight.bold,
-                  ),
+                // RECOMMENDED TITLE
+                Row(
+
+                  mainAxisAlignment:
+                      MainAxisAlignment
+                          .spaceBetween,
+
+                  children: const [
+
+                    Text(
+                      "Recommended",
+
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
+                    ),
+
+                    Text(
+                      "See All",
+
+                      style: TextStyle(
+                        color:
+                            Color(0xFF0066B3),
+
+                        fontWeight:
+                            FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 20),
 
-                const DestinationCard(
-                  name: "Uluwatu Temple",
-                  location: "Bali",
-                  price: "Rp150.000",
-                  image:
-                      "https://images.unsplash.com/photo-1537953773345-d172ccf13cf1",
+                // API DATA
+                FutureBuilder<
+                    List<DestinationModel>>(
+
+                  future: destinations,
+
+                  builder:
+                      (context, snapshot) {
+
+                    // LOADING
+                    if (snapshot
+                            .connectionState ==
+                        ConnectionState
+                            .waiting) {
+
+                      return const Center(
+                        child:
+                            CircularProgressIndicator(),
+                      );
+                    }
+
+                    // ERROR
+                    if (snapshot.hasError) {
+
+                      return const Text(
+                        "Gagal mengambil data",
+                      );
+                    }
+
+                    // EMPTY
+                    if (!snapshot.hasData ||
+                        snapshot.data!.isEmpty) {
+
+                      return const Text(
+                        "Data kosong",
+                      );
+                    }
+
+                    // DATA
+                    final data =
+                        snapshot.data!;
+
+                    return ListView.builder(
+
+                      itemCount:
+                          data.length,
+
+                      shrinkWrap: true,
+
+                      physics:
+                          const NeverScrollableScrollPhysics(),
+
+                      itemBuilder:
+                          (context, index) {
+
+                        final destination =
+                            data[index];
+
+                        return DestinationCard(
+                          destination:
+                              destination,
+                        );
+                      },
+                    );
+                  },
                 ),
 
-                const DestinationCard(
-                  name: "Sine Beach",
-                  location: "Tulungagung",
-                  price: "Rp250.000",
-                  image:
-                      "https://images.unsplash.com/photo-1519046904884-53103b34b206",
-                ),
+                const SizedBox(height: 30),
               ],
             ),
           ),

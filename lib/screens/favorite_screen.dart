@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/bottom_navbar.dart';
+// import '../widgets/bottom_navbar.dart';
 
 class FavoriteScreen extends StatelessWidget {
   const FavoriteScreen({super.key});
@@ -14,10 +14,10 @@ class FavoriteScreen extends StatelessWidget {
         title: const Text("Favorite"),
       ),
 
-      bottomNavigationBar:
-          const BottomNavbar(
-        currentIndex: 1,
-      ),
+      // bottomNavigationBar:
+      //     const BottomNavbar(
+      //   currentIndex: 1,
+      // ),
     );
   }
 }

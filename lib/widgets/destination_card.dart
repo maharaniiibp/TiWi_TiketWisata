@@ -1,112 +1,167 @@
 import 'package:flutter/material.dart';
 
+import '../models/destination_model.dart';
+import '../screens/detail_screen.dart';
+
 class DestinationCard extends StatelessWidget {
 
-  final String name;
-  final String location;
-  final String price;
-  final String image;
+  final DestinationModel destination;
 
   const DestinationCard({
     super.key,
-    required this.name,
-    required this.location,
-    required this.price,
-    required this.image,
+    required this.destination,
   });
 
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 18),
+    return GestureDetector(
 
-      decoration: BoxDecoration(
-        color: Colors.white,
+      onTap: () {
 
-        borderRadius:
-            BorderRadius.circular(18),
-      ),
+        Navigator.push(
 
-      child: Row(
-        children: [
+          context,
 
-          ClipRRect(
-            borderRadius:
-                const BorderRadius.only(
-              topLeft: Radius.circular(18),
-              bottomLeft:
-                  Radius.circular(18),
-            ),
+          MaterialPageRoute(
 
-            child: Image.network(
-              image,
-              height: 110,
-              width: 110,
-              fit: BoxFit.cover,
+            builder: (context) =>
+                DetailScreen(
+              destination:
+                  destination,
             ),
           ),
+        );
+      },
 
-          Expanded(
-            child: Padding(
+      child: Container(
+
+        margin:
+            const EdgeInsets.only(
+          bottom: 20,
+        ),
+
+        decoration: BoxDecoration(
+          color: Colors.white,
+
+          borderRadius:
+              BorderRadius.circular(24),
+        ),
+
+        child: Column(
+
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
+
+          children: [
+
+            ClipRRect(
+
+              borderRadius:
+                  const BorderRadius.only(
+                topLeft:
+                    Radius.circular(24),
+
+                topRight:
+                    Radius.circular(24),
+              ),
+
+              child: Image.network(
+
+                destination.image,
+
+                height: 220,
+
+                width: double.infinity,
+
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            Padding(
+
               padding:
-                  const EdgeInsets.all(14),
+                  const EdgeInsets.all(18),
 
-              child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+              child: Row(
+
+                mainAxisAlignment:
+                    MainAxisAlignment
+                        .spaceBetween,
 
                 children: [
 
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight:
-                          FontWeight.bold,
-                    ),
-                  ),
+                  Column(
 
-                  const SizedBox(height: 6),
-
-                  Text(
-                    location,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment
-                            .spaceBetween,
+                    crossAxisAlignment:
+                        CrossAxisAlignment
+                            .start,
 
                     children: [
 
                       Text(
-                        price,
-                        style: const TextStyle(
-                          color:
-                              Color(0xFF0066B3),
 
+                        destination.name,
+
+                        style:
+                            const TextStyle(
+                          fontSize: 24,
                           fontWeight:
                               FontWeight.bold,
                         ),
                       ),
 
-                      const Icon(
-                        Icons.favorite_border,
-                        color: Colors.red,
+                      const SizedBox(
+                          height: 8),
+
+                      Row(
+                        children: [
+
+                          const Icon(
+                            Icons.location_on,
+                            color:
+                                Colors.grey,
+                            size: 18,
+                          ),
+
+                          const SizedBox(
+                              width: 4),
+
+                          Text(
+                            destination
+                                .location,
+
+                            style:
+                                const TextStyle(
+                              color:
+                                  Colors.grey,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
+                  ),
+
+                  Text(
+
+                    "Rp ${destination.price}",
+
+                    style:
+                        const TextStyle(
+                      color:
+                          Color(0xFF0066B3),
+
+                      fontWeight:
+                          FontWeight.bold,
+
+                      fontSize: 22,
+                    ),
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

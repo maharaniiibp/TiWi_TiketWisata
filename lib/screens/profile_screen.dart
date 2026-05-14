@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/bottom_navbar.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -14,10 +13,7 @@ class ProfileScreen extends StatelessWidget {
         title: const Text("Account"),
       ),
 
-      bottomNavigationBar:
-          const BottomNavbar(
-        currentIndex: 3,
-      ),
+     
     );
   }
 }

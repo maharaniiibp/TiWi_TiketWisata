@@ -2,13 +2,8 @@ import 'package:flutter/material.dart';
 
 class CustomHeader extends StatelessWidget {
 
-  final String title;
-  final String subtitle;
-
   const CustomHeader({
     super.key,
-    required this.title,
-    required this.subtitle,
   });
 
   @override
@@ -20,36 +15,60 @@ class CustomHeader extends StatelessWidget {
 
       children: [
 
+        // TEXT
         Column(
           crossAxisAlignment:
               CrossAxisAlignment.start,
 
-          children: [
+          children: const [
 
             Text(
-              subtitle,
-              style: const TextStyle(
+              "Welcome Back",
+              style: TextStyle(
+                fontSize: 12,
                 color: Colors.grey,
+                fontWeight:
+                    FontWeight.w500,
               ),
             ),
 
-            const SizedBox(height: 4),
+            SizedBox(height: 2),
 
             Text(
-              title,
-              style: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF0066B3),
+              "Hi, ExploTiWi",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight:
+                    FontWeight.bold,
+                color:
+                    Color(0xFF0066B3),
               ),
             ),
           ],
         ),
 
-        const CircleAvatar(
-          radius: 24,
-          backgroundImage: NetworkImage(
-            "https://i.pravatar.cc/150?img=12",
+        // PROFILE IMAGE
+        Container(
+          height: 40,
+          width: 40,
+
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+
+            border: Border.all(
+              color:
+                  const Color(0xFF0066B3),
+              width: 2,
+            ),
+          ),
+
+          child: ClipOval(
+
+            child: Image.asset(
+              'assets/images/Profile.png',
+
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ],
